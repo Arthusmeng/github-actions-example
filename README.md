@@ -12,7 +12,8 @@
 _Create a GitHub Action and use it in a workflow._
 
 </header>
-[example workflow](https://github.com/github/docs/actions/workflows/main.yml/badge.svg)
+
+[example workflow](https://github.com/Arthusmeng/skills-hello-github-actions/actions/workflows/publish-docker.yml/badge.svg)
 <!--
   <<< Author notes: Step 1 >>>
   Choose 3-5 steps for your course.
