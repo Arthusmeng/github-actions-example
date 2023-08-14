@@ -1,0 +1,81 @@
+name: Node.js CI/CD with Docker
+
+on:
+  push:
+    branches:
+      - main
+      - staging
+      - production
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14.x'
+
+      - name: Install dependencies
+        run: |
+          npm install
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: true
+          tags: |
+            my-registry.com/my-image:latest
+            my-registry.com/my-image:${{ github.ref.name }}
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to environment
+        if: github.ref == 'refs/heads/main'
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.PROD_HOST }}
+          username: ${{ secrets.PROD_USERNAME }}
+          password: ${{ secrets.PROD_PASSWORD }}
+          port: ${{ secrets.PROD_PORT }}
+          script: |
+            # deploy to production environment
+            cd /var/www/myapp
+            docker-compose pull
+            docker-compose up -d
+
+      - name: Deploy to environment
+        if: github.ref == 'refs/heads/staging'
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.STAGING_HOST }}
+          username: ${{ secrets.STAGING_USERNAME }}
+          password: ${{ secrets.STAGING_PASSWORD }}
+          port: ${{ secrets.STAGING_PORT }}
+          script: |
+            # deploy to staging environment
+            cd /var/www/myapp
+            docker-compose pull
+            docker-compose up -d
+
+      - name: Deploy to environment
+        if: github.ref == 'refs/heads/development'
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DEV_HOST }}
+          username: ${{ secrets.DEV_USERNAME }}
+          password: ${{ secrets.DEV_PASSWORD }}
+          port: ${{ secrets.DEV_PORT }}
+          script: |
+            # deploy to development environment
+            cd /var/www/myapp
+            docker-compose pull
+            docker-compose up -d
