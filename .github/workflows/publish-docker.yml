@@ -54,7 +54,7 @@ jobs:
           docker push registry.cn-hangzhou.aliyuncs.com
 
       - name: Deployment with ssh 
-        uses: appleboy/ssh-action@v0.1.10
+        uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.SERVER_HOST }} # 服务器ip地址 ; 需要去仓库的 settings/secrets/actions 去创建
           username: ${{ secrets.SERVER_USER }} # 服务器用户名称；需要去仓库的 settings/secrets/actions 去创建
