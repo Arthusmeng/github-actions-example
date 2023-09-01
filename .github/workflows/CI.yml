@@ -25,7 +25,7 @@ jobs:
           username: ${{ secrets.aliacrname }} # 仓库Action 中的secrets 
           password: ${{ secrets.aliacrpass }} # 仓库Action 中的secrets  
           
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v3
         with:
           node-version: "16.14"  # 指定node版本
 
