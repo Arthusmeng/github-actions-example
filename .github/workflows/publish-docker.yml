@@ -19,7 +19,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - uses: docker/login-action@v1
+      - uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }} # 声明镜像源
           username: ${{ secrets.aliacrname }} # 仓库Action 中的secrets 
